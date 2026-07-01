@@ -21,6 +21,7 @@ export const strings = {
       t2: ". Fusiono frontend de alto nivel, Web3, IA y ciberseguridad para convertir ideas ambiciosas en productos reales.",
       viewServices: "VER SERVICIOS",
       contact: "CONTACTO",
+      cv: "DESCARGAR CV",
     },
     stats: ["Años programando", "Proyectos construidos", "Tecnologías dominadas", "Áreas de especialidad"],
     about: {
@@ -57,6 +58,7 @@ export const strings = {
       t2: ". I blend high-end frontend, Web3, AI and cybersecurity to turn ambitious ideas into real products.",
       viewServices: "VIEW SERVICES",
       contact: "CONTACT",
+      cv: "DOWNLOAD CV",
     },
     stats: ["Years coding", "Projects built", "Technologies mastered", "Areas of expertise"],
     about: {

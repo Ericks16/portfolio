@@ -107,7 +107,9 @@ export const projects: Project[] = [
       en: "This very site: an SPA with an interactive particle background, fluid animations and a Pokémon mascot. Built and deployed from scratch.",
     },
     tags: ["React", "TypeScript", "Framer Motion", "Vite"],
-    Icon: FaCode, color: "#a855f7", github: "https://github.com/Ericks16/portfolio",
+    Icon: FaCode, color: "#a855f7",
+    github: "https://github.com/Ericks16/portfolio",
+    demo: "https://portfolio-self-two-63.vercel.app",
   },
   {
     title: { es: "dApp Web3", en: "Web3 dApp" },

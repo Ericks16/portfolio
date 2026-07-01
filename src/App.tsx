@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { motion, useScroll, useInView, animate } from "framer-motion";
-import { FaGithub, FaLinkedin, FaEnvelope, FaArrowRight, FaMapMarkerAlt, FaGraduationCap, FaExternalLinkAlt, FaPaperPlane } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaEnvelope, FaArrowRight, FaMapMarkerAlt, FaGraduationCap, FaExternalLinkAlt, FaPaperPlane, FaDownload } from "react-icons/fa";
 import { HiSparkles } from "react-icons/hi";
 import { TbLanguage } from "react-icons/tb";
 import Background from "./components/Background";
@@ -116,6 +116,7 @@ function Hero() {
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.65 }} className="flex flex-wrap gap-4 justify-center">
         <a href="#services" className="btn-neon btn-primary">{t.hero.viewServices} <FaArrowRight /></a>
+        <a href="/CV_Erick_Erazo.pdf" download className="btn-neon btn-ghost"><FaDownload /> {t.hero.cv}</a>
         <a href="#contact" className="btn-neon btn-ghost">{t.hero.contact}</a>
       </motion.div>
 
