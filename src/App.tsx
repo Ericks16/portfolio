@@ -275,7 +275,7 @@ function TechStack() {
 
 function ContactForm() {
   const t = useT();
-  const [status, setStatus] = useState<"idle" | "sending" | "ok" | "err">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "ok" | "err" | "pending">("idle");
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -293,7 +293,8 @@ function ContactForm() {
       });
       const data = await res.json();
       if (String(data.success) === "true") { setStatus("ok"); form.reset(); }
-      else setStatus("err");
+      else if (/activ/i.test(data.message || "")) { setStatus("pending"); }
+      else { setStatus("err"); }
     } catch {
       setStatus("err");
     }
@@ -318,6 +319,7 @@ function ContactForm() {
         {status === "sending" ? t.contact.sending : t.contact.send} <FaPaperPlane />
       </button>
       {status === "ok" && <p className="text-cyan font-mono text-sm text-center pt-1">{t.contact.ok}</p>}
+      {status === "pending" && <p className="font-mono text-sm text-center pt-1" style={{ color: "#ffb300" }}>{t.contact.pending}</p>}
       {status === "err" && <p className="text-magenta font-mono text-sm text-center pt-1">{t.contact.err}</p>}
     </form>
   );

@@ -1,5 +1,5 @@
 import type { IconType } from "react-icons";
-import { FaCode, FaCube, FaRobot, FaShieldAlt, FaPaintBrush, FaServer, FaGithub } from "react-icons/fa";
+import { FaCode, FaCube, FaRobot, FaShieldAlt, FaPaintBrush, FaServer, FaGithub, FaLeaf } from "react-icons/fa";
 import {
   SiReact, SiAngular, SiTypescript, SiJavascript, SiHtml5, SiCss, SiTailwindcss, SiSass, SiBootstrap, SiVite,
   SiSolidity, SiEthereum, SiWeb3Dotjs, SiChainlink, SiIpfs, SiPolygon,
@@ -80,6 +80,17 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+  {
+    title: { es: "Primus Agro AI", en: "Primus Agro AI" },
+    desc: {
+      es: "Agente de IA que detecta y diagnostica enfermedades en plantas del Ecuador a partir de imágenes, apoyando a agricultores con recomendaciones. Modelo entrenado con Python y desplegado en la web.",
+      en: "AI agent that detects and diagnoses plant diseases in Ecuador from images, helping farmers with recommendations. Model trained in Python and deployed to the web.",
+    },
+    tags: ["Python", "TypeScript", "AI/ML", "PostgreSQL", "Docker"],
+    Icon: FaLeaf, color: "#00ff9f",
+    github: "https://github.com/Ericks16/primus-agro-ai",
+    demo: "https://primus-agro-ai.vercel.app",
+  },
   {
     title: { es: "Perfil GitHub Animado", en: "Animated GitHub Profile" },
     desc: {
