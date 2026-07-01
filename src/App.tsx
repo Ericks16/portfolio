@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useInView, animate } from "framer-motion";
 import { FaGithub, FaLinkedin, FaEnvelope, FaArrowRight, FaMapMarkerAlt, FaGraduationCap } from "react-icons/fa";
 import { HiSparkles } from "react-icons/hi";
 import ParticleField from "./components/ParticleField";
@@ -13,6 +13,8 @@ const reveal = {
   hidden: { opacity: 0, y: 40 },
   show: { opacity: 1, y: 0 },
 };
+
+const allTech = techCategories.flatMap((c) => c.items);
 
 /* ---------- Texto tipeado ---------- */
 function Typed() {
@@ -52,6 +54,29 @@ function Typed() {
   );
 }
 
+/* ---------- Contador animado ---------- */
+function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.5 });
+  const [val, setVal] = useState(0);
+  useEffect(() => {
+    if (!inView) return;
+    const controls = animate(0, to, {
+      duration: 1.6,
+      ease: "easeOut",
+      onUpdate: (v) => setVal(Math.floor(v)),
+    });
+    return () => controls.stop();
+  }, [inView, to]);
+  return <span ref={ref}>{val}{suffix}</span>;
+}
+
+/* ---------- Barra de progreso de scroll ---------- */
+function ScrollProgress() {
+  const { scrollYProgress } = useScroll();
+  return <motion.div className="progress-bar" style={{ scaleX: scrollYProgress }} />;
+}
+
 /* ---------- Navbar ---------- */
 function Navbar() {
   const links = [
@@ -79,15 +104,24 @@ function Navbar() {
 /* ---------- Hero ---------- */
 function Hero() {
   return (
-    <section id="home" className="min-h-screen flex flex-col items-center justify-center text-center px-6 pt-20">
-      <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7 }}>
+    <section id="home" className="min-h-screen flex flex-col items-center justify-center text-center px-6 pt-28 pb-16">
+      <motion.div
+        className="avatar-wrap float mb-8"
+        initial={{ opacity: 0, scale: 0.7 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.7 }}
+      >
+        <img src="/avatar.jpg" alt="Erick Erazo" />
+      </motion.div>
+
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}>
         <span className="chip mb-6"><HiSparkles className="text-cyan" /> Disponible para proyectos · Quito, Ecuador</span>
       </motion.div>
 
       <motion.h1
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.1 }}
+        transition={{ duration: 0.7, delay: 0.2 }}
         className="font-display font-black text-5xl md:text-7xl my-6"
       >
         <span className="glitch neon-text" data-text="ERICK ERAZO">ERICK ERAZO</span>
@@ -96,8 +130,8 @@ function Hero() {
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.7, delay: 0.3 }}
-        className="text-2xl md:text-3xl mb-4 h-10"
+        transition={{ duration: 0.7, delay: 0.35 }}
+        className="text-2xl md:text-3xl mb-5 h-10"
       >
         <Typed />
       </motion.p>
@@ -105,17 +139,17 @@ function Hero() {
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.7, delay: 0.45 }}
-        className="max-w-xl text-lg text-[#9890a8] mb-9"
+        transition={{ duration: 0.7, delay: 0.5 }}
+        className="max-w-2xl text-lg md:text-xl text-[#a89fba] mb-9 leading-relaxed"
       >
-        Ingeniero de Software construyendo experiencias web modernas, dApps y
-        soluciones con IA. Transformo ideas en productos digitales que vuelan.
+        No solo escribo código — <span className="text-cyan font-semibold">construyo experiencias digitales que la gente recuerda</span>.
+        Fusiono frontend de alto nivel, Web3, IA y ciberseguridad para convertir ideas ambiciosas en productos reales.
       </motion.p>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.6 }}
+        transition={{ duration: 0.7, delay: 0.65 }}
         className="flex flex-wrap gap-4 justify-center"
       >
         <a href="#services" className="btn-neon btn-primary">VER SERVICIOS <FaArrowRight /></a>
@@ -126,6 +160,49 @@ function Hero() {
         <a href={GITHUB} target="_blank" rel="noreferrer" className="text-[#9890a8] hover:text-cyan transition-colors"><FaGithub /></a>
         <a href={LINKEDIN} target="_blank" rel="noreferrer" className="text-[#9890a8] hover:text-cyan transition-colors"><FaLinkedin /></a>
         <a href={`mailto:${EMAIL}`} className="text-[#9890a8] hover:text-cyan transition-colors"><FaEnvelope /></a>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- Marquee de tecnologías ---------- */
+function TechMarquee() {
+  const row = [...allTech, ...allTech];
+  return (
+    <div className="marquee py-6 border-y border-purple/15 bg-[#0a001466]">
+      <div className="marquee-track">
+        {row.map((t, i) => (
+          <t.Icon key={i} title={t.name} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ---------- Stats ---------- */
+function Stats() {
+  const stats = [
+    { to: 3, suffix: "+", label: "Años programando" },
+    { to: 20, suffix: "+", label: "Proyectos construidos" },
+    { to: 35, suffix: "+", label: "Tecnologías dominadas" },
+    { to: 5, suffix: "", label: "Áreas de especialidad" },
+  ];
+  return (
+    <section className="section-pad !py-16">
+      <div className="container-x grid grid-cols-2 md:grid-cols-4 gap-6">
+        {stats.map((s, i) => (
+          <motion.div
+            key={s.label}
+            variants={reveal} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.5, delay: i * 0.1 }}
+            className="glass py-8 text-center"
+          >
+            <div className="font-display font-black text-4xl md:text-5xl grad-text">
+              <Counter to={s.to} suffix={s.suffix} />
+            </div>
+            <p className="font-mono text-sm text-[#9890a8] mt-2">{s.label}</p>
+          </motion.div>
+        ))}
       </div>
     </section>
   );
@@ -154,11 +231,14 @@ function About() {
           variants={reveal} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6 }}
           className="glass p-8 md:p-12 max-w-3xl mx-auto text-center"
         >
-          <p className="text-xl leading-relaxed text-[#c8c2d4] mb-6">
-            Soy <span className="text-cyan font-semibold">Erick Sebastián Erazo</span>, estudiante de
-            Ingeniería de Software en la <span className="text-purple font-semibold">EPN</span> (la mejor de Ecuador),
-            apasionado por construir productos digitales rápidos, seguros y con diseño de impacto.
-            Combino frontend de alto nivel con Web3, IA y ciberseguridad.
+          <p className="text-xl leading-relaxed text-[#c8c2d4] mb-5">
+            Soy <span className="text-cyan font-semibold">Erick Sebastián Erazo</span>, ingeniero de software en formación
+            en la <span className="text-purple font-semibold">EPN</span> — la universidad #1 de Ecuador — y un obsesivo del detalle.
+          </p>
+          <p className="text-lg leading-relaxed text-[#a89fba] mb-8">
+            Mientras otros eligen un solo camino, yo conecto mundos: interfaces que fluyen, smart contracts que no fallan,
+            automatizaciones con IA y sistemas que resisten ataques. Aprendo rápido, entrego a tiempo y me apasiona
+            transformar problemas complejos en productos que <span className="text-magenta font-semibold">vuelan cabezas</span>.
           </p>
           <div className="flex flex-wrap gap-3 justify-center font-mono text-sm">
             <span className="chip"><FaMapMarkerAlt className="text-magenta" /> Quito, Ecuador</span>
@@ -262,11 +342,14 @@ function Contact() {
 export default function App() {
   return (
     <>
+      <ScrollProgress />
       <div className="cyber-grid" />
       <ParticleField />
       <Navbar />
       <main>
         <Hero />
+        <TechMarquee />
+        <Stats />
         <About />
         <Services />
         <TechStack />
