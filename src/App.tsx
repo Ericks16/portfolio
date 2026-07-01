@@ -276,12 +276,23 @@ function TechStack() {
 
 function ContactForm() {
   const t = useT();
-  const [status, setStatus] = useState<"idle" | "sending" | "ok" | "err" | "pending">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "ok" | "fallback">("idle");
+  const [mailto, setMailto] = useState("");
+
+  const buildMailto = (fd: FormData) => {
+    const name = String(fd.get("name") || "");
+    const email = String(fd.get("email") || "");
+    const message = String(fd.get("message") || "");
+    const subject = encodeURIComponent(`Contacto desde el portafolio — ${name}`);
+    const body = encodeURIComponent(`Nombre: ${name}\nEmail: ${email}\n\n${message}`);
+    return `mailto:erick.erazo2003@gmail.com?subject=${subject}&body=${body}`;
+  };
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const fd = new FormData(form);
+    const mt = buildMailto(fd);
     fd.append("_subject", "Nuevo mensaje desde el portafolio");
     fd.append("_captcha", "false");
     fd.append("_template", "table");
@@ -294,10 +305,10 @@ function ContactForm() {
       });
       const data = await res.json();
       if (String(data.success) === "true") { setStatus("ok"); form.reset(); }
-      else if (/activ/i.test(data.message || "")) { setStatus("pending"); }
-      else { setStatus("err"); }
+      else { setMailto(mt); setStatus("fallback"); }
     } catch {
-      setStatus("err");
+      setMailto(mt);
+      setStatus("fallback");
     }
   };
 
@@ -320,8 +331,12 @@ function ContactForm() {
         {status === "sending" ? t.contact.sending : t.contact.send} <FaPaperPlane />
       </button>
       {status === "ok" && <p className="text-cyan font-mono text-sm text-center pt-1">{t.contact.ok}</p>}
-      {status === "pending" && <p className="font-mono text-sm text-center pt-1" style={{ color: "#ffb300" }}>{t.contact.pending}</p>}
-      {status === "err" && <p className="text-magenta font-mono text-sm text-center pt-1">{t.contact.err}</p>}
+      {status === "fallback" && (
+        <div className="text-center pt-2">
+          <p className="font-mono text-sm mb-3" style={{ color: "#ffb300" }}>{t.contact.fallback}</p>
+          <a href={mailto} className="btn-neon btn-primary justify-center inline-flex"><FaEnvelope /> {t.contact.fallbackBtn}</a>
+        </div>
+      )}
     </form>
   );
 }
