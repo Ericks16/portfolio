@@ -15,7 +15,7 @@ export default function ParticleField() {
     let h = (canvas.height = window.innerHeight);
     const mouse = { x: -9999, y: -9999 };
 
-    const count = Math.min(90, Math.floor((w * h) / 18000));
+    const count = Math.min(120, Math.floor((w * h) / 14000));
     const pts: P[] = Array.from({ length: count }, () => ({
       x: Math.random() * w,
       y: Math.random() * h,
@@ -26,17 +26,29 @@ export default function ParticleField() {
     let raf = 0;
     const draw = () => {
       ctx.clearRect(0, 0, w, h);
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = "#00f0ff";
       for (const p of pts) {
         p.x += p.vx;
         p.y += p.vy;
         if (p.x < 0 || p.x > w) p.vx *= -1;
         if (p.y < 0 || p.y > h) p.vy *= -1;
 
+        // repulsión suave desde el cursor
+        const mdx = p.x - mouse.x, mdy = p.y - mouse.y;
+        const md = Math.hypot(mdx, mdy);
+        if (md < 120 && md > 0.1) {
+          const f = (120 - md) * 0.03;
+          p.x += (mdx / md) * f;
+          p.y += (mdy / md) * f;
+        }
+
         ctx.beginPath();
-        ctx.arc(p.x, p.y, 1.6, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, 1.7, 0, Math.PI * 2);
         ctx.fillStyle = "#00f0ff";
         ctx.fill();
       }
+      ctx.shadowBlur = 0;
       for (let i = 0; i < pts.length; i++) {
         for (let j = i + 1; j < pts.length; j++) {
           const a = pts[i], b = pts[j];

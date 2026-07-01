@@ -3,6 +3,7 @@ import { motion, useScroll, useInView, animate } from "framer-motion";
 import { FaGithub, FaLinkedin, FaEnvelope, FaArrowRight, FaMapMarkerAlt, FaGraduationCap, FaExternalLinkAlt } from "react-icons/fa";
 import { HiSparkles } from "react-icons/hi";
 import { TbLanguage } from "react-icons/tb";
+import Background from "./components/Background";
 import ParticleField from "./components/ParticleField";
 import PokemonMascot from "./components/PokemonMascot";
 import { services, techCategories, projects } from "./data";
@@ -297,7 +298,7 @@ function Site() {
   return (
     <>
       <ScrollProgress />
-      <div className="cyber-grid" />
+      <Background />
       <ParticleField />
       <Navbar />
       <main>
