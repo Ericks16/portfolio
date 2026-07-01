@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useInView, animate } from "framer-motion";
-import { FaGithub, FaLinkedin, FaEnvelope, FaArrowRight, FaMapMarkerAlt, FaGraduationCap } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaEnvelope, FaArrowRight, FaMapMarkerAlt, FaGraduationCap, FaExternalLinkAlt } from "react-icons/fa";
 import { HiSparkles } from "react-icons/hi";
 import ParticleField from "./components/ParticleField";
-import { services, techCategories } from "./data";
+import PokemonMascot from "./components/PokemonMascot";
+import { services, techCategories, projects } from "./data";
 
 const EMAIL = "erick.erazo2003@gmail.com";
 const LINKEDIN = "https://www.linkedin.com/in/erick-erazo-05826a29a/";
@@ -83,6 +84,7 @@ function Navbar() {
     ["Inicio", "home"],
     ["Sobre mí", "about"],
     ["Servicios", "services"],
+    ["Proyectos", "projects"],
     ["Tech", "tech"],
     ["Contacto", "contact"],
   ];
@@ -281,6 +283,58 @@ function Services() {
   );
 }
 
+/* ---------- Projects ---------- */
+function Projects() {
+  return (
+    <section id="projects" className="section-pad">
+      <div className="container-x">
+        <SectionTitle tag="// mi trabajo" title="PROYECTOS" />
+        <div className="grid gap-6 md:grid-cols-2">
+          {projects.map((p, idx) => (
+            <motion.div
+              key={p.title}
+              variants={reveal} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.5, delay: (idx % 2) * 0.1 }}
+              className="glass p-7 flex flex-col"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center text-xl"
+                  style={{ background: `${p.color}1a`, color: p.color, boxShadow: `0 0 18px ${p.color}33` }}
+                >
+                  <p.Icon />
+                </div>
+                {p.soon && (
+                  <span className="chip !py-1 !px-3 text-xs" style={{ color: p.color, borderColor: `${p.color}66` }}>
+                    Próximamente
+                  </span>
+                )}
+              </div>
+              <h3 className="font-display font-bold text-xl text-white mb-2">{p.title}</h3>
+              <p className="text-[#9890a8] leading-relaxed mb-5 flex-1">{p.desc}</p>
+              <div className="flex flex-wrap gap-2 mb-5">
+                {p.tags.map((tag) => (
+                  <span key={tag} className="font-mono text-xs px-2.5 py-1 rounded-md bg-[#a855f71a] text-[#c8b6ff]">{tag}</span>
+                ))}
+              </div>
+              {!p.soon && (
+                <div className="flex gap-3">
+                  {p.github && (
+                    <a href={p.github} target="_blank" rel="noreferrer" className="btn-neon btn-ghost !py-2 !px-4 text-xs"><FaGithub /> CÓDIGO</a>
+                  )}
+                  {p.demo && (
+                    <a href={p.demo} target="_blank" rel="noreferrer" className="btn-neon btn-primary !py-2 !px-4 text-xs"><FaExternalLinkAlt /> DEMO</a>
+                  )}
+                </div>
+              )}
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ---------- Tech Stack ---------- */
 function TechStack() {
   return (
@@ -352,9 +406,11 @@ export default function App() {
         <Stats />
         <About />
         <Services />
+        <Projects />
         <TechStack />
         <Contact />
       </main>
+      <PokemonMascot />
       <footer className="border-t border-purple/20 py-8 text-center font-mono text-sm text-[#6b6378]">
         <p>Diseñado y construido por Erick Erazo · {new Date().getFullYear()}</p>
         <p className="mt-1 text-xs">React · TypeScript · Vite · Framer Motion · Tailwind</p>

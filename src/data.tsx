@@ -1,5 +1,5 @@
 import type { IconType } from "react-icons";
-import { FaCode, FaCube, FaRobot, FaShieldAlt, FaPaintBrush, FaServer } from "react-icons/fa";
+import { FaCode, FaCube, FaRobot, FaShieldAlt, FaPaintBrush, FaServer, FaGithub } from "react-icons/fa";
 import {
   SiReact, SiAngular, SiTypescript, SiJavascript, SiHtml5, SiCss, SiTailwindcss, SiSass, SiBootstrap, SiVite,
   SiSolidity, SiEthereum, SiWeb3Dotjs, SiChainlink, SiIpfs, SiPolygon,
@@ -51,6 +51,52 @@ export const services: Service[] = [
     desc: "APIs REST con Node.js, bases de datos SQL/NoSQL y arquitecturas limpias, seguras y escalables.",
     Icon: FaServer,
     color: "#38bdf8",
+  },
+];
+
+export interface Project {
+  title: string;
+  desc: string;
+  tags: string[];
+  Icon: IconType;
+  color: string;
+  github?: string;
+  demo?: string;
+  soon?: boolean;
+}
+
+export const projects: Project[] = [
+  {
+    title: "Perfil GitHub Animado",
+    desc: "Mi README de perfil estilo cyberpunk: animaciones SVG propias, mascota pixel, y una serpiente + Pac-Man que recorren mi mapa de contribuciones (GitHub Actions).",
+    tags: ["SVG", "GitHub Actions", "Automatización"],
+    Icon: FaGithub,
+    color: "#00f0ff",
+    github: "https://github.com/Ericks16",
+  },
+  {
+    title: "Portafolio Cyberpunk",
+    desc: "Este mismo sitio: SPA con fondo de partículas interactivo, animaciones fluidas y mascota Pokémon. Construido y desplegado desde cero.",
+    tags: ["React", "TypeScript", "Framer Motion", "Vite"],
+    Icon: FaCode,
+    color: "#a855f7",
+    github: "https://github.com/Ericks16/portfolio",
+  },
+  {
+    title: "dApp Web3",
+    desc: "Aplicación descentralizada con smart contracts en Solidity, conexión de wallets y despliegue en testnet. En construcción.",
+    tags: ["Solidity", "Ethers.js", "Hardhat"],
+    Icon: FaCube,
+    color: "#ff006e",
+    soon: true,
+  },
+  {
+    title: "Automatización con IA",
+    desc: "Agente que integra LLMs (Anthropic) con flujos de n8n y LangChain para automatizar tareas reales. En construcción.",
+    tags: ["Python", "LangChain", "n8n"],
+    Icon: FaRobot,
+    color: "#00ff9f",
+    soon: true,
   },
 ];
 

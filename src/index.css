@@ -245,3 +245,29 @@ body {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-12px); }
 }
+
+/* ---------- mascota Pokémon que camina ---------- */
+.poke-mascot {
+  position: fixed;
+  bottom: 6px;
+  left: 0;
+  z-index: 45;
+  pointer-events: none;
+  will-change: transform;
+}
+.poke-mascot img {
+  display: block;
+  width: 84px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 9px rgba(0, 240, 255, 0.55));
+}
+.poke-mascot .shadow {
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 60px;
+  height: 10px;
+  margin-left: -30px;
+  background: radial-gradient(ellipse, rgba(0, 240, 255, 0.35), transparent 70%);
+  border-radius: 50%;
+}
