@@ -301,3 +301,31 @@ body {
   image-rendering: pixelated;
   will-change: transform;
 }
+
+/* ---------- formulario cyberpunk ---------- */
+.field-label {
+  display: block;
+  text-align: left;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  color: #9890a8;
+  margin-bottom: 6px;
+}
+.cyber-input {
+  width: 100%;
+  background: rgba(10, 0, 20, 0.6);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: #e6e1ef;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 16px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+.cyber-input:focus {
+  border-color: #00f0ff;
+  box-shadow: 0 0 16px rgba(0, 240, 255, 0.25);
+}
+.cyber-input::placeholder { color: #6f6a80; }
+textarea.cyber-input { resize: vertical; min-height: 120px; }

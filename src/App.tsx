@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { motion, useScroll, useInView, animate } from "framer-motion";
-import { FaGithub, FaLinkedin, FaEnvelope, FaArrowRight, FaMapMarkerAlt, FaGraduationCap, FaExternalLinkAlt } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaEnvelope, FaArrowRight, FaMapMarkerAlt, FaGraduationCap, FaExternalLinkAlt, FaPaperPlane } from "react-icons/fa";
 import { HiSparkles } from "react-icons/hi";
 import { TbLanguage } from "react-icons/tb";
 import Background from "./components/Background";
@@ -273,19 +273,73 @@ function TechStack() {
   );
 }
 
+function ContactForm() {
+  const t = useT();
+  const [status, setStatus] = useState<"idle" | "sending" | "ok" | "err">("idle");
+
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    fd.append("_subject", "Nuevo mensaje desde el portafolio");
+    fd.append("_captcha", "false");
+    fd.append("_template", "table");
+    setStatus("sending");
+    try {
+      const res = await fetch("https://formsubmit.co/ajax/erick.erazo2003@gmail.com", {
+        method: "POST",
+        body: fd,
+        headers: { Accept: "application/json" },
+      });
+      const data = await res.json();
+      if (String(data.success) === "true") { setStatus("ok"); form.reset(); }
+      else setStatus("err");
+    } catch {
+      setStatus("err");
+    }
+  };
+
+  return (
+    <form onSubmit={onSubmit} className="text-left space-y-4">
+      <input type="text" name="_honey" tabIndex={-1} autoComplete="off" style={{ display: "none" }} />
+      <div>
+        <label className="field-label">{t.contact.nameLabel}</label>
+        <input name="name" required placeholder={t.contact.namePh} className="cyber-input" />
+      </div>
+      <div>
+        <label className="field-label">{t.contact.emailLabel}</label>
+        <input type="email" name="email" required placeholder={t.contact.emailPh} className="cyber-input" />
+      </div>
+      <div>
+        <label className="field-label">{t.contact.msgLabel}</label>
+        <textarea name="message" required placeholder={t.contact.msgPh} className="cyber-input" rows={4} />
+      </div>
+      <button type="submit" disabled={status === "sending"} className="btn-neon btn-primary w-full justify-center">
+        {status === "sending" ? t.contact.sending : t.contact.send} <FaPaperPlane />
+      </button>
+      {status === "ok" && <p className="text-cyan font-mono text-sm text-center pt-1">{t.contact.ok}</p>}
+      {status === "err" && <p className="text-magenta font-mono text-sm text-center pt-1">{t.contact.err}</p>}
+    </form>
+  );
+}
+
 function Contact() {
   const t = useT();
   return (
     <section id="contact" className="section-pad">
       <div className="container-x">
         <SectionTitle tag={t.contact.tag} title={t.contact.title} />
-        <motion.div variants={reveal} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6 }} className="glass p-8 md:p-14 max-w-3xl mx-auto text-center">
-          <h3 className="font-display font-black text-2xl md:text-4xl text-white mb-4">{t.contact.heading}</h3>
-          <p className="text-[#9890a8] text-lg mb-9 max-w-xl mx-auto">{t.contact.body}</p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <a href={`mailto:${EMAIL}`} className="btn-neon btn-primary"><FaEnvelope /> {t.contact.email}</a>
-            <a href={LINKEDIN} target="_blank" rel="noreferrer" className="btn-neon btn-ghost"><FaLinkedin /> LINKEDIN</a>
-            <a href={GITHUB} target="_blank" rel="noreferrer" className="btn-neon btn-ghost"><FaGithub /> GITHUB</a>
+        <motion.div variants={reveal} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.6 }} className="glass p-8 md:p-12 max-w-2xl mx-auto">
+          <h3 className="font-display font-black text-2xl md:text-4xl text-white mb-3 text-center">{t.contact.heading}</h3>
+          <p className="text-[#9890a8] text-lg mb-8 text-center">{t.contact.body}</p>
+          <ContactForm />
+          <div className="flex items-center gap-3 my-7 text-[#6b6378] font-mono text-xs uppercase">
+            <span className="flex-1 h-px bg-purple/20" />{t.contact.or}<span className="flex-1 h-px bg-purple/20" />
+          </div>
+          <div className="flex flex-wrap gap-3 justify-center">
+            <a href={LINKEDIN} target="_blank" rel="noreferrer" className="btn-neon btn-ghost !py-2 !px-4 text-xs"><FaLinkedin /> LINKEDIN</a>
+            <a href={GITHUB} target="_blank" rel="noreferrer" className="btn-neon btn-ghost !py-2 !px-4 text-xs"><FaGithub /> GITHUB</a>
+            <a href={`mailto:${EMAIL}`} className="btn-neon btn-ghost !py-2 !px-4 text-xs"><FaEnvelope /> EMAIL</a>
           </div>
         </motion.div>
       </div>
