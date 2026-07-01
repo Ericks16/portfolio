@@ -302,6 +302,39 @@ body {
   will-change: transform;
 }
 
+/* ---------- dragón de neón procedural ---------- */
+.neon-dragon {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+}
+
+/* ---------- botón volver arriba ---------- */
+.back-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 60;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 240, 255, 0.5);
+  background: rgba(10, 0, 20, 0.7);
+  backdrop-filter: blur(8px);
+  color: #00f0ff;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 18px rgba(0, 240, 255, 0.25);
+}
+.back-top:hover {
+  background: rgba(0, 240, 255, 0.12);
+  box-shadow: 0 0 28px rgba(0, 240, 255, 0.5);
+  transform: translateY(-3px);
+}
+
 /* ---------- formulario cyberpunk ---------- */
 .field-label {
   display: block;

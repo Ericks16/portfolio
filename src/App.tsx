@@ -5,8 +5,9 @@ import { HiSparkles } from "react-icons/hi";
 import { TbLanguage } from "react-icons/tb";
 import Background from "./components/Background";
 import ParticleField from "./components/ParticleField";
-import PokemonMascot from "./components/PokemonMascot";
+import NeonDragon from "./components/NeonDragon";
 import { services, techCategories, projects } from "./data";
+import { Analytics } from "@vercel/analytics/react";
 import { LangContext, useLang, useT, type Lang } from "./i18n";
 
 const EMAIL = "erick.erazo2003@gmail.com";
@@ -365,6 +366,21 @@ function Contact() {
   );
 }
 
+function BackToTop() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setShow(window.scrollY > 600);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  if (!show) return null;
+  return (
+    <button className="back-top" aria-label="Volver arriba" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+      ↑
+    </button>
+  );
+}
+
 function Site() {
   const t = useT();
   return (
@@ -383,11 +399,13 @@ function Site() {
         <TechStack />
         <Contact />
       </main>
-      <PokemonMascot />
+      <NeonDragon />
+      <BackToTop />
       <footer className="border-t border-purple/20 py-8 text-center font-mono text-sm text-[#6b6378]">
         <p>{t.footer} · {new Date().getFullYear()}</p>
         <p className="mt-1 text-xs">React · TypeScript · Vite · Framer Motion · Tailwind</p>
       </footer>
+      <Analytics />
     </>
   );
 }
